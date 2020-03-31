@@ -1,35 +1,100 @@
 import React, { Component } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { w3cwebsocket } from 'websocket';
+import { executeAction, join_room } from '../../ws/ws_manager'
+
 
 export default class Player extends Component {
 
-    state = { codeGame: '' }
+    state = { codeGame: '', stepGame:1, client: null }
+
+
+    componentDidMount() {
+        this.connect();
+    }
+
+    connect = () => {
+
+        const ws = new w3cwebsocket('ws://127.0.0.1:8500/websocket/?client=movie');
+
+        let that = this; // cache the this
+        var connectInterval;
+
+        // websocket onopen event listener
+        ws.onopen = () => {
+            console.log("connected websocket main component");
+            this.setState({ client: ws })
+        };
+
+        // websocket onclose event listener
+        ws.onclose = e => {
+            console.log(
+                `Socket is closed. Reconnect will be attempted in `,
+                e.reason
+            );
+        };
+
+        // websocket onerror event listener
+        ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            ws.close();
+        };
+
+        ws.onmessage = (message) => {
+            try { 
+                console.log(message)
+                let data = JSON.parse(message.data);
+                executeAction(data, this);
+                return true;
+            } catch {
+                return null;
+            } 
+        };
+    };
 
     _handleSubmit = (e) => {
         e.preventDefault();
 
         alert(this.state.codeGame)
     }
+    enterCode(e){
+        console.log(this.state.codeGame);
+        join_room(this.state.codeGame, this.state.client);
+    }
+    _renderSwich() {
+        switch(this.state.stepGame) {
+            case 1:
+                return  <Form>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Label>Player code</Form.Label>
+                                <Form.Control type="text" placeholder="Code" onChange={e=>this.setState({
+                                    codeGame: e.target.value
+                                })} />
+                                
+                            </Form.Group>
+                            <Button variant="primary" type="button" onClick={e=>this.enterCode(e)}>
+                                Entrar
+                            </Button>
+                        </Form>
+            
+            case 2:
+                return <h3>Player Ready!</h3>;
 
+            case 3:
+                return <h2>Hola Juega bobo</h2>
+
+            default:
+        }
+    }
     render() {
         return (
             <div>
-                <form onSubmit={this._handleSubmit}>
-                    <div className="field has-addons">
-                        <div className="control">
-                            <input 
-                                className="input" 
-                                type="text" 
-                                placeholder="Find a movie"
-                                value={ this.state.codeGame }
-                                onChange={e => this.setState({ codeGame: e.target.value }) } />
-                        </div>
-                        <div className="control">
-                            <button className="button is-info">
-                                Start Game
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                { this._renderSwich() }
             </div>
         );
     }

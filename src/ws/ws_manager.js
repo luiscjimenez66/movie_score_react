@@ -18,34 +18,9 @@ export function executeAction(data, object) {
     return ;
   }
 
-  if (action === 'joined_room'){
-    joined_into_your_room(params);
-    return ;
-  }
-
-  if (action === 'left_room'){
-    left_your_room(params);
-    return ;
-  }
-
-  if (action === 'you_won_play'){
-    won_play(params);
-    return ;
-  }
-
-  if(action === 'you_lose_play'){
-    lose_play(params);
-    return ;
-  }
-
-  if(action === 'you_won_game'){
-    won_game(params);
-    return ;
-  }
-
-  if(action === 'you_lose_play'){
-    lose_game(params);
-    return ;
+  if (action==='accepted_code'){
+    accepted_code(params, object);
+    return;
   }
 }
 
@@ -71,13 +46,8 @@ export function send(msg, client){
 
 //actions export function s (own actions)
 // when try to play with other play..then enter a room 
-export function  join_room(room, user){
-  send({'action': 'join_room', 'params': {'room': room, 'user': user}});
-}
-
-// when generate a room to wait other oponent
-export function  create_room(room, user, client){
-  send({'action': 'create_room', 'params': {'room': room, 'user': user}}, client);
+export function  join_room(user_key, client){
+  send({'action': 'join_room', 'params': {'user_key': user_key}}, client);
 }
 
 // when the play choose a option playing...
@@ -85,30 +55,6 @@ export function  play(option, user){
   send({'action': 'play', 'params': {'move': option, 'user': user}});
 }
 
-export function  get_rooms(user){
-  send({'action': 'get_rooms', 'params': {'user': user}});
-}
-
-export function  joined_into_your_room(params){
-  // what do when its happen?
-}
-
-export function  left_your_room(params){
-  // what do when its happen?
-}
-
-export function  won_play(params){
-  // what do when its happen?
-}
-
-export function  lose_play(params){
-  // what do when its happen?
-}
-
-export function  won_game(params){
-  // what do when its happen?
-}
-
-export function  lose_game(params){
-  // what do when its happen?
+export function accepted_code(params, object){
+  object.setState({stepGame: 2});
 }
