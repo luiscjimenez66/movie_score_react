@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Row, Col } from 'react-bootstrap';
 
 export default class MovieList extends Component {
 
@@ -9,10 +10,10 @@ export default class MovieList extends Component {
         const { movies } = this.props;
         console.log(movies);
         return (
-            <div>
-                <h2>{ movies[1] }</h2>
-                <h2>{ movies[2] }</h2>
-            </div>
+            <Row>
+                <Col>1 of 2</Col>
+                <Col>2 of 2</Col>
+            </Row>
         );
     }
 }

@@ -7,23 +7,25 @@ import { NoFound } from './pages/NoFound';
 import Home from './pages/Home';
 import Judge from './pages/Judge/Judge';
 import Player from './pages/Player/Player';
-import Header from './components/header/header'
+import { Header } from './components/header/header';
+import { Layout } from './components/layout/layout';
+
 
 class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <React.Fragment>
         <Header />
-        <div style={{ width: "100%", height:200, border: "1px solid red" }}>
+        <Layout>
           <Switch>
             <Route exact path="/" component={ Home } />
             <Route exact path="/Judge" component={ Judge } />
             <Route exact path="/Player" component={ Player } />
             <Route component={ NoFound } />
           </Switch>
-        </div>
-      </div>
+        </Layout>
+      </React.Fragment>
     );
   }
 }

@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Navbar } from 'react-bootstrap';
 import logo from '../../logo.svg';
 
-export default class Header extends Component {
-    render() {
-        return (
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-            </header>
-        );
-    }
-}
+export const Header = () => (
+    <Navbar bg="dark">
+        <Navbar.Brand href="/">
+            <img
+                src={logo}
+                width="50"
+                height="50"
+                className="d-inline-block align-top"
+                alt="React Bootstrap logo"
+            />{' '}
+            Preguntados
+        </Navbar.Brand>
+    </Navbar>
+)
