@@ -55,12 +55,12 @@ export function get_codes(params, object) {
 
 export function starting_play(params, object) {
   const { time } = params;
-  object.setState({ isPlayersRegistried: true, count:  time });
+  object.setState({ stepGame: 2, count:  time });
 }
 
 export function start_play(params, object) {
   const { options } = params;
-  object.setState({ isStartingGame: true, movies:  options });
+  object.setState({ stepGame: 3, movies:  options });
 }
 
 //export function  to handler ws

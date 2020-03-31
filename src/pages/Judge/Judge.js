@@ -7,13 +7,12 @@ import MovieList from '../../components/movie-list/movie-list'
 export default class Judge extends Component {
 
     state = { 
-                stages: [], 
-                client: null, 
-                isPlayersRegistried: false, 
-                count: 0, 
-                isStartingGame: false,
-                movies: []
-            }
+        client: null, 
+        stepGame: 1,
+        count: 0, 
+        stages: [], 
+        movies: []
+    }
 
     componentDidMount() {
         this.connect();
@@ -64,17 +63,12 @@ export default class Judge extends Component {
         ws.onmessage = (message) => {
             
             try { 
+                
                 console.log(message)
                 let data = JSON.parse(message.data);
-                
-                //const { action, params } = data;
-                /*
-                if (action === 'get_codes') {
-                    this.setState({ stages: params.codes });
-                }*/
                 executeAction(data, this);
-
-                return true;              
+                return true;
+                
             } catch {
                 return null;
             } 
@@ -89,17 +83,27 @@ export default class Judge extends Component {
                 });
     }
 
+    _renderSwich() {
+        switch(this.state.stepGame) {
+            case 1:
+                return this._renderStages();
+            
+            case 2:
+                return <h3>{this.state.count}</h3>;
+
+            case 3:
+                return <MovieList movies = { this.state.movies } />;
+
+            default:
+        }
+    }
+
     render() {
         return (
             <div>
                 <h1>Room</h1>
                 <div>
-                    {this.state.isStartingGame
-                        ? <MovieList movies = { this.state.movies } />
-                        : this.state.isPlayersRegistried 
-                            ? <h3>{this.state.count}</h3>
-                            : this._renderStages()
-                    }
+                    { this._renderSwich() }
                 </div>
             </div>
         );
