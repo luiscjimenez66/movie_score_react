@@ -11,7 +11,9 @@ export default class Judge extends Component {
         stepGame: 1,
         count: 0, 
         stages: [], 
-        movies: []
+        movies: [],
+        users: {},
+        round: 0
     }
 
     componentDidMount() {
@@ -89,11 +91,11 @@ export default class Judge extends Component {
                 return this._renderStages();
             
             case 2:
-                return <h3>{this.state.count}</h3>;
-
+                return <h3>{this.state.round} - {this.state.count}</h3>;
             case 3:
                 return <MovieList movies = { this.state.movies } />;
-
+            case 4:
+                return <h3>{this.state.users} </h3>
             default:
         }
     }

@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, ButtonGroup } from 'react-bootstrap';
 import { w3cwebsocket } from 'websocket';
-import { executeAction, join_room } from '../../ws/ws_manager'
+import { executeAction, join_room, play } from '../../ws/ws_manager'
 
 
 export default class Player extends Component {
 
-    state = { codeGame: '', stepGame:1, client: null }
+    state = { 
+        codeGame: '', 
+        stepGame:0, 
+        client: null, 
+        count: 3, 
+        movies: [], 
+        users: {},
+        round: 0 
+    }
 
 
     componentDidMount() {
@@ -66,9 +74,12 @@ export default class Player extends Component {
         console.log(this.state.codeGame);
         join_room(this.state.codeGame, this.state.client);
     }
+    movement(what_play){
+        play(this.state.movies[what_play].key, this.state.client);
+    }
     _renderSwich() {
         switch(this.state.stepGame) {
-            case 1:
+            case 0:
                 return  <Form>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Player code</Form.Label>
@@ -82,12 +93,22 @@ export default class Player extends Component {
                             </Button>
                         </Form>
             
-            case 2:
+            case 1:
                 return <h3>Player Ready!</h3>;
 
+            case 2:
+                return <h3>{this.state.round} - {this.state.count}</h3>;
             case 3:
-                return <h2>Hola Juega bobo</h2>
-
+                return <ButtonGroup>
+                            <Button variant="primary" type="button" onClick={() => this.movement(0)}>
+                                {this.state.movies[0].data.Title}
+                            </Button>
+                            <Button variant="primary" type="button" onClick={() => this.movement(1)}>
+                                {this.state.movies[1].data.Title}
+                            </Button>
+                        </ButtonGroup>
+            case 4:
+                return <h3>{this.state.users}</h3>
             default:
         }
     }

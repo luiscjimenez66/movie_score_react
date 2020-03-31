@@ -22,6 +22,11 @@ export function executeAction(data, object) {
     accepted_code(params, object);
     return;
   }
+
+  if (action === 'end_game'){
+    end_game(params, object);
+    return ;
+  }
 }
 
 export function get_codes(params, object) {
@@ -29,8 +34,8 @@ export function get_codes(params, object) {
 }
 
 export function starting_play(params, object) {
-  const { time } = params;
-  object.setState({ stepGame: 2, count:  time });
+  const { time, round } = params;
+  object.setState({ stepGame: 2, count:  time, round: round });
 }
 
 export function start_play(params, object) {
@@ -51,10 +56,14 @@ export function  join_room(user_key, client){
 }
 
 // when the play choose a option playing...
-export function  play(option, user){
-  send({'action': 'play', 'params': {'move': option, 'user': user}});
+export function  play(move, client){
+  send({'action': 'play', 'params': {'answer': move}}, client);
 }
 
 export function accepted_code(params, object){
-  object.setState({stepGame: 2});
+  object.setState({stepGame: 1});
+}
+
+export function end_game(params, object){
+  object.setState({stepGame: 4, users: params.users });
 }
