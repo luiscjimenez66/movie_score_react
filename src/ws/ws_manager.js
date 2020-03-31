@@ -1,109 +1,114 @@
-import React, { Component } from 'react';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
+//action from server
+export function executeAction(data, object) {
+    
+  const {action, params} = data;
 
-const client = new W3CWebSocket('ws://127.0.0.1:8500');
-
-class WsManager extends Component {
-  componentWillMount() {
-    client.onopen = () => {
-      console.log('WebSocket Client Connected');
-    };
-    client.onmessage = (message) => {
-      console.log(message);
-      try{
-        let data = JSON.parse(evt.data);
-        executeAction(data);
-        return true;
-      }catch{
-          return null;
-      } 
-    };
+  if (action === 'get_codes'){
+    get_codes(params, object);
+    return ;
   }
 
-  
-  
-  //function to handler ws
-  // main functions
-  send(msg){
-    client.send(JSON.stringify(msg));
+  if(action === 'starting_play') {
+    starting_play(params, object);
+    return ;
   }
 
-  //actions functions (own actions)
-  // when try to play with other play..then enter a room 
-  join_room(room, user){
-    this.send({'action': 'join_room', 'params': {'room': room, 'user': user}});
+  if(action === 'start_play') {
+    start_play(params, object);
+    return ;
   }
 
-  // when generate a room to wait other oponent
-  create_room(room, user){
-    this.send({'action': 'create_room', 'params': {'room': room, 'user': user}});
+  if (action === 'joined_room'){
+    joined_into_your_room(params);
+    return ;
   }
 
-  // when the play choose a option playing...
-  play(option, user){
-    this.send({'action': 'play', 'params': {'move': option, 'user': user}});
+  if (action === 'left_room'){
+    left_your_room(params);
+    return ;
   }
 
-  get_rooms(user){
-    this.send({'action': 'get_rooms', 'params': {'user': user}});
+  if (action === 'you_won_play'){
+    won_play(params);
+    return ;
   }
 
-  //action from server
-  executeAction(data){
-    const {action, params} = data;
-
-    if (action=='joined_room'){
-      this.joined_into_your_room(params);
-      return ;
-    }
-    if (action=='left_room'){
-      this.left_your_room(params);
-      return ;
-    }
-    if (action=='you_won_play'){
-      this.won_play(params);
-      return ;
-    }
-    if(action=='you_lose_play'){
-      this.lose_play(params);
-      return ;
-    }
-    if(action=='you_won_game'){
-      this.won_game(params);
-      return ;
-    }
-    if(action=='you_lose_play'){
-      this.lose_game(params);
-      return ;
-    }
+  if(action === 'you_lose_play'){
+    lose_play(params);
+    return ;
   }
 
-  joined_into_your_room(params){
-    // what do when its happen?
+  if(action === 'you_won_game'){
+    won_game(params);
+    return ;
   }
 
-  left_your_room(params){
-    // what do when its happen?
+  if(action === 'you_lose_play'){
+    lose_game(params);
+    return ;
   }
+}
 
-  won_play(params){
-    // what do when its happen?
-  }
-  lose_play(params){
-    // what do when its happen?
-  }
-  won_game(params){
-    // what do when its happen?
-  }
-  lose_game(params){
-    // what do when its happen?
-  }
+export function get_codes(params, object) {
+  object.setState({ stages: params.codes });
+}
 
-  render() {
-    return (
-      <div>
-        Practical Intro To WebSockets.
-      </div>
-    );
-  }
+export function starting_play(params, object) {
+  const { time } = params;
+  object.setState({ isPlayersRegistried: true, count:  time });
+}
+
+export function start_play(params, object) {
+  const { options } = params;
+  object.setState({ isStartingGame: true, movies:  options });
+}
+
+//export function  to handler ws
+// main export function s
+export function send(msg, client){
+  client.send(JSON.stringify(msg));
+}
+
+//actions export function s (own actions)
+// when try to play with other play..then enter a room 
+export function  join_room(room, user){
+  send({'action': 'join_room', 'params': {'room': room, 'user': user}});
+}
+
+// when generate a room to wait other oponent
+export function  create_room(room, user, client){
+  send({'action': 'create_room', 'params': {'room': room, 'user': user}}, client);
+}
+
+// when the play choose a option playing...
+export function  play(option, user){
+  send({'action': 'play', 'params': {'move': option, 'user': user}});
+}
+
+export function  get_rooms(user){
+  send({'action': 'get_rooms', 'params': {'user': user}});
+}
+
+export function  joined_into_your_room(params){
+  // what do when its happen?
+}
+
+export function  left_your_room(params){
+  // what do when its happen?
+}
+
+export function  won_play(params){
+  // what do when its happen?
+}
+
+export function  lose_play(params){
+  // what do when its happen?
+}
+
+export function  won_game(params){
+  // what do when its happen?
+}
+
+export function  lose_game(params){
+  // what do when its happen?
 }
