@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, ButtonGroup } from 'react-bootstrap';
+import { Form, Button, ButtonGroup, Image } from 'react-bootstrap';
 import { w3cwebsocket } from 'websocket';
 import { executeAction, join_room, play } from '../../ws/ws_manager'
 
@@ -12,7 +12,7 @@ export default class Player extends Component {
         client: null, 
         count: 3, 
         movies: [], 
-        users: {},
+        users: [],
         round: 0 
     }
 
@@ -25,8 +25,8 @@ export default class Player extends Component {
 
         const ws = new w3cwebsocket('ws://127.0.0.1:8500/websocket/?client=movie');
 
-        let that = this; // cache the this
-        var connectInterval;
+        //let that = this; // cache the this
+        //var connectInterval;
 
         // websocket onopen event listener
         ws.onopen = () => {
@@ -70,17 +70,21 @@ export default class Player extends Component {
 
         alert(this.state.codeGame)
     }
-    enterCode(e){
-        console.log(this.state.codeGame);
+
+    _handleEnterCode(e){
+        e.preventDefault();
         join_room(this.state.codeGame, this.state.client);
     }
+
     movement(what_play){
         play(this.state.movies[what_play].key, this.state.client);
     }
-    _renderSwich() {
+
+    _renderSwich = () => {
+
         switch(this.state.stepGame) {
             case 0:
-                return  <Form>
+                return  <Form onSubmit={e => this._handleEnterCode(e)}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Player code</Form.Label>
                                 <Form.Control type="text" placeholder="Code" onChange={e=>this.setState({
@@ -88,7 +92,7 @@ export default class Player extends Component {
                                 })} />
                                 
                             </Form.Group>
-                            <Button variant="primary" type="button" onClick={e=>this.enterCode(e)}>
+                            <Button variant="primary" type="submit">
                                 Entrar
                             </Button>
                         </Form>
@@ -107,8 +111,22 @@ export default class Player extends Component {
                                 {this.state.movies[1].data.Title}
                             </Button>
                         </ButtonGroup>
-            case 4:
-                return <h3>{this.state.users}</h3>
+            case 4: 
+                return (
+                        <React.Fragment>
+                            {
+                                this.state.users.map(item => {
+                                    return  <div key={item.id.value}>
+                                                <Image src={item.picture.thumbnail} />
+                                                <h3>
+                                                        {item.name.first} {item.name.first} = {item.wons}
+                                                </h3>
+                                            </div>
+                                })
+                            }
+                        </React.Fragment>
+                )
+
             default:
         }
     }

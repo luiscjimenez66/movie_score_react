@@ -65,5 +65,7 @@ export function accepted_code(params, object){
 }
 
 export function end_game(params, object){
+
+  console.log(params.users)
   object.setState({stepGame: 4, users: params.users });
 }
