@@ -82,7 +82,12 @@ export default class Judge extends Component {
     _renderStages() {
         return this.state.stages.map(stage => {
                     return(
-                    <h3 key={stage}>Player {stage}</h3>
+                        (stage==this.state.strike) ?
+                            <strike>
+                                <h3 key="{stage}-1">Player {stage}</h3>
+                            </strike> 
+                        :
+                            <h3 key={stage}>Player {stage}</h3>
                     )
                 });
     }

@@ -23,6 +23,10 @@ export function executeAction(data, object) {
       end_game(params, object);
       break;
     }
+    case 'joined_room':{
+      joined_room(params, object);
+      break;
+    }
   }
 }
 
@@ -66,4 +70,9 @@ export function accepted_code(params, object){
 export function end_game(params, object){
   console.log(params.users)
   object.setState({stepGame: 4, users: params.users });
+}
+
+export function joined_room(params, object){
+  console.log(params);
+  object.setState({strike: params.user_key});
 }
