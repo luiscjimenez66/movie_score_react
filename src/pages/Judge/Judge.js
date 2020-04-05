@@ -3,6 +3,8 @@ import { w3cwebsocket } from 'websocket';
 
 import { executeAction } from '../../ws/ws_manager'
 import MovieList from '../../components/movie-list/movie-list'
+import { Form, Button, ButtonGroup, Image } from 'react-bootstrap';
+
 
 export default class Judge extends Component {
 
@@ -12,8 +14,8 @@ export default class Judge extends Component {
         count: 0, 
         stages: [], 
         movies: [],
-        users: {},
-        round: 0
+        users: [],
+        round: 0,
     }
 
     componentDidMount() {
@@ -22,7 +24,7 @@ export default class Judge extends Component {
 
     connect = () => {
 
-        const ws = new w3cwebsocket('ws://127.0.0.1:8500/websocket');
+        const ws = new w3cwebsocket('ws://192.168.0.201:8500/websocket');
 
         let that = this; // cache the this
         var connectInterval;
@@ -94,8 +96,21 @@ export default class Judge extends Component {
                 return <h3>{this.state.round} - {this.state.count}</h3>;
             case 3:
                 return <MovieList movies = { this.state.movies } />;
-            case 4:
-                return <h3>{this.state.users} </h3>
+            case 4: 
+                return (
+                        <React.Fragment>
+                            {
+                                this.state.users.map(item => {
+                                    return  <div key={item.id.value}>
+                                                <Image src={item.picture.thumbnail} />
+                                                <h3>
+                                                        {item.name.first} {item.name.first} = {item.wons}
+                                                </h3>
+                                            </div>
+                                })
+                            }
+                        </React.Fragment>
+                )
             default:
         }
     }

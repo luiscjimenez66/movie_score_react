@@ -13,7 +13,8 @@ export default class Player extends Component {
         count: 3, 
         movies: [], 
         users: [],
-        round: 0 
+        round: 0,
+        player: {},
     }
 
 
@@ -23,7 +24,7 @@ export default class Player extends Component {
 
     connect = () => {
 
-        const ws = new w3cwebsocket('ws://127.0.0.1:8500/websocket/?client=movie');
+        const ws = new w3cwebsocket('ws://192.168.0.201:8500/websocket/?client=movie');
 
         //let that = this; // cache the this
         //var connectInterval;
@@ -97,9 +98,13 @@ export default class Player extends Component {
                             </Button>
                         </Form>
             
-            case 1:
-                return <h3>Player Ready!</h3>;
-
+            case 1: return <div>
+                        <h1>Player Ready!</h1>
+                        <Image src={this.state.player.picture.large} />
+                        <h3>
+                            {this.state.player.name.first} {this.state.player.name.first}
+                        </h3>
+                    </div>;
             case 2:
                 return <h3>{this.state.round} - {this.state.count}</h3>;
             case 3:

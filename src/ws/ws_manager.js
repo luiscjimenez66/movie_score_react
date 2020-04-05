@@ -2,30 +2,27 @@
 export function executeAction(data, object) {
     
   const {action, params} = data;
-
-  if (action === 'get_codes'){
-    get_codes(params, object);
-    return ;
-  }
-
-  if(action === 'starting_play') {
-    starting_play(params, object);
-    return ;
-  }
-
-  if(action === 'start_play') {
-    start_play(params, object);
-    return ;
-  }
-
-  if (action==='accepted_code'){
-    accepted_code(params, object);
-    return;
-  }
-
-  if (action === 'end_game'){
-    end_game(params, object);
-    return ;
+  switch(action){
+    case 'get_codes':{
+      get_codes(params, object);
+      break;
+    }
+    case 'starting_play':{
+      starting_play(params, object);  
+      break;
+    }
+    case 'start_play':{
+      start_play(params, object);
+      break; 
+    }
+    case 'accepted_code':{
+      accepted_code(params, object);
+      break;
+    }
+    case 'end_game':{
+      end_game(params, object);
+      break;
+    }
   }
 }
 
@@ -61,11 +58,12 @@ export function  play(move, client){
 }
 
 export function accepted_code(params, object){
-  object.setState({stepGame: 1});
+  const {person} = params; 
+  console.log(person);
+  object.setState({stepGame: 1, player:person});
 }
 
 export function end_game(params, object){
-
   console.log(params.users)
   object.setState({stepGame: 4, users: params.users });
 }
