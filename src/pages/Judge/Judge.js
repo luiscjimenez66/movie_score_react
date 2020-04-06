@@ -16,6 +16,7 @@ export default class Judge extends Component {
         movies: [],
         users: [],
         round: 0,
+        question: null,
     }
 
     componentDidMount() {
@@ -98,9 +99,11 @@ export default class Judge extends Component {
                 return this._renderStages();
             
             case 2:
-                return <h3>{this.state.round} - {this.state.count}</h3>;
+                // TODO WE CAN PUT HERE
+                // users[0] vs users[1]...
+                return <h3>Start Round {this.state.round} in {this.state.count} seconds</h3>;
             case 3:
-                return <MovieList movies = { this.state.movies } />;
+                return <MovieList movies = { this.state.movies } question={this.state.question} />;
             case 4: 
                 return (
                         <React.Fragment>
@@ -109,7 +112,7 @@ export default class Judge extends Component {
                                     return  <div key={item.id.value}>
                                                 <Image src={item.picture.thumbnail} />
                                                 <h3>
-                                                        {item.name.first} {item.name.first} = {item.wons}
+                                                        {item.name.first} {item.name.last} = {item.wons}
                                                 </h3>
                                             </div>
                                 })

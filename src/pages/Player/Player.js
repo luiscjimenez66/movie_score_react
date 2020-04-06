@@ -15,6 +15,7 @@ export default class Player extends Component {
         users: [],
         round: 0,
         player: {},
+        question: null,
     }
 
 
@@ -102,11 +103,11 @@ export default class Player extends Component {
                         <h1>Player Ready!</h1>
                         <Image src={this.state.player.picture.large} />
                         <h3>
-                            {this.state.player.name.first} {this.state.player.name.first}
+                            {this.state.player.name.first} {this.state.player.name.last}
                         </h3>
                     </div>;
             case 2:
-                return <h3>{this.state.round} - {this.state.count}</h3>;
+                return <h3>Starting Round {this.state.round} in {this.state.count} seconds</h3>;
             case 3:
                 return <ButtonGroup>
                             <Button variant="primary" type="button" onClick={() => this.movement(0)}>

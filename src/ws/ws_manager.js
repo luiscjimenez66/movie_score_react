@@ -40,8 +40,8 @@ export function starting_play(params, object) {
 }
 
 export function start_play(params, object) {
-  const { options } = params;
-  object.setState({ stepGame: 3, movies:  options });
+  const { options, question } = params;
+  object.setState({ stepGame: 3, movies:  options, question: question });
 }
 
 //export function  to handler ws
