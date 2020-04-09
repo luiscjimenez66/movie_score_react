@@ -88,7 +88,8 @@ export default class Player extends Component {
             case 0:
                 return  <Form onSubmit={e => this._handleEnterCode(e)}>
                             <Form.Group controlId="formBasicEmail">
-                                <Image src='film.svg' width='100pd' roundedCircle></Image>
+                                
+                                <Image src='photographic-film.svg' width='10%'></Image>
                                 <Form.Label>Player code</Form.Label>
                                 <Form.Control type="text" placeholder="Code" onChange={e=>this.setState({
                                     codeGame: e.target.value
@@ -112,11 +113,9 @@ export default class Player extends Component {
             case 3:
                 return (
                     <Container>
+                            <Image src='photographic-film.svg' width='20%'></Image>
                         <Row>
-                            <Image src='photographic-film.svg' width='100pd'></Image>
-                        </Row>
-                        <Row>
-                            <Col xs={6} md={4}>
+                            <Col xs={4} md={4}>
                                 <ButtonGroup>
                                     <Button variant="primary" type="button" onClick={() => this.movement(0)}>
                                         {this.state.movies[0].data.Title}
@@ -137,7 +136,7 @@ export default class Player extends Component {
                                     return  <div key={item.id.value}>
                                                 <Image src={item.picture.large} />
                                                 <h3>
-                                                        {item.name.first} {item.name.first} = {item.wons}
+                                                        {item.name.first} {item.name.last} = {item.wons}
                                                 </h3>
                                             </div>
                                 })
