@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar } from 'react-bootstrap';
-import logo from '../../logo.svg';
+import logo from '../../cinema.svg';
 
 export const Header = () => (
     <Navbar bg="dark">
@@ -10,9 +10,8 @@ export const Header = () => (
                 width="50"
                 height="50"
                 className="d-inline-block align-top"
-                alt="React Bootstrap logo"
+                alt="Movie Player"
             />{' '}
-            Preguntados
         </Navbar.Brand>
     </Navbar>
 )

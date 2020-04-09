@@ -57,8 +57,8 @@ export function  join_room(user_key, client){
 }
 
 // when the play choose a option playing...
-export function  play(move, client){
-  send({'action': 'play', 'params': {'answer': move}}, client);
+export function  play(move, round, client){
+  send({'action': 'play', 'params': {'answer': move, 'round': round}}, client);
 }
 
 export function accepted_code(params, object){

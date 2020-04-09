@@ -85,10 +85,27 @@ export default class Judge extends Component {
                     return(
                         (stage==this.state.strike) ?
                             <strike>
-                                <h3 key="{stage}-1">Player {stage}</h3>
+                                <img
+                                    src='user.svg'
+                                    width="50"
+                                    height="50"
+                                    className="d-inline-block align-top"
+                                    alt="Player"
+                                />
+                            <h3 key="{stage}-1">Player {stage}</h3>
                             </strike> 
                         :
+                        <div>
+                            <img
+                                    src='user.svg'
+                                    width="50"
+                                    height="50"
+                                    className="d-inline-block align-top"
+                                    alt="Player"
+                                />
                             <h3 key={stage}>Player {stage}</h3>
+                        </div>
+                            
                     )
                 });
     }
@@ -110,7 +127,7 @@ export default class Judge extends Component {
                             {
                                 this.state.users.map(item => {
                                     return  <div key={item.id.value}>
-                                                <Image src={item.picture.thumbnail} />
+                                                <Image src={item.picture.large} />
                                                 <h3>
                                                         {item.name.first} {item.name.last} = {item.wons}
                                                 </h3>
@@ -126,7 +143,6 @@ export default class Judge extends Component {
     render() {
         return (
             <div>
-                <h1>Room</h1>
                 <div>
                     { this._renderSwich() }
                 </div>

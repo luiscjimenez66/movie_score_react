@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, ButtonGroup, Image } from 'react-bootstrap';
+import { Form, Button, ButtonGroup, Image, Container, Col, Row} from 'react-bootstrap';
 import { w3cwebsocket } from 'websocket';
 import { executeAction, join_room, play } from '../../ws/ws_manager'
 
@@ -79,7 +79,7 @@ export default class Player extends Component {
     }
 
     movement(what_play){
-        play(this.state.movies[what_play].key, this.state.client);
+        play(this.state.movies[what_play].key, this.state.round, this.state.client);
     }
 
     _renderSwich = () => {
@@ -88,6 +88,7 @@ export default class Player extends Component {
             case 0:
                 return  <Form onSubmit={e => this._handleEnterCode(e)}>
                             <Form.Group controlId="formBasicEmail">
+                                <Image src='film.svg' width='100pd' roundedCircle></Image>
                                 <Form.Label>Player code</Form.Label>
                                 <Form.Control type="text" placeholder="Code" onChange={e=>this.setState({
                                     codeGame: e.target.value
@@ -109,21 +110,32 @@ export default class Player extends Component {
             case 2:
                 return <h3>Starting Round {this.state.round} in {this.state.count} seconds</h3>;
             case 3:
-                return <ButtonGroup>
-                            <Button variant="primary" type="button" onClick={() => this.movement(0)}>
-                                {this.state.movies[0].data.Title}
-                            </Button>
-                            <Button variant="primary" type="button" onClick={() => this.movement(1)}>
-                                {this.state.movies[1].data.Title}
-                            </Button>
-                        </ButtonGroup>
+                return (
+                    <Container>
+                        <Row>
+                            <Image src='photographic-film.svg' width='100pd'></Image>
+                        </Row>
+                        <Row>
+                            <Col xs={6} md={4}>
+                                <ButtonGroup>
+                                    <Button variant="primary" type="button" onClick={() => this.movement(0)}>
+                                        {this.state.movies[0].data.Title}
+                                    </Button>
+                                    <Button variant="primary" type="button" onClick={() => this.movement(1)}>
+                                        {this.state.movies[1].data.Title}
+                                    </Button>
+                                </ButtonGroup>
+                            </Col>
+                        </Row>
+                    </Container>
+                )
             case 4: 
                 return (
                         <React.Fragment>
                             {
                                 this.state.users.map(item => {
                                     return  <div key={item.id.value}>
-                                                <Image src={item.picture.thumbnail} />
+                                                <Image src={item.picture.large} />
                                                 <h3>
                                                         {item.name.first} {item.name.first} = {item.wons}
                                                 </h3>
